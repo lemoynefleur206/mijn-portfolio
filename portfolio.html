@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="css/tailwind.css">
   <link rel="stylesheet" href="css/style.css">
+  <script defer src="json/portfolio.js"></script>
+  <script defer src="json/menu.js"></script>
 </head>
 
 <body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col justify-between">
@@ -32,7 +34,7 @@
 
         <input type="checkbox" id="menu-toggle" class="hidden peer" />
 
-        <nav class="hidden peer-checked:block md:block mt-4 md:mt-0">
+        <nav aria-label="Hoofdmenu" class="hidden peer-checked:block md:block mt-4 md:mt-0">
           <ul class="flex flex-col md:flex-row space-y-1 md:space-y-0 md:space-x-2">
             <li>
               <a href="index.html"
@@ -40,17 +42,27 @@
                 Home
               </a>
             </li>
-            <li>
-              <a href="portfolio.html" aria-current="page"
-                class="block px-3 py-2 rounded-lg bg-blue-100 text-blue-900 font-semibold transition-colors">
-                Portfolio
-              </a>
-            </li>
-            <li>
-              <a href="project.html"
-                class="block px-3 py-2 rounded-lg text-gray-700 font-medium hover:bg-gray-100 transition-colors">
-                Project
-              </a>
+            <li class="relative group">
+              <div class="flex items-center">
+                <a href="portfolio.html" aria-current="page"
+                  class="block px-3 py-2 rounded-lg bg-blue-100 text-blue-900 font-semibold transition-colors">
+                  Portfolio
+                </a>
+                <button type="button" data-submenu-toggle aria-expanded="false"
+                  aria-label="Submenu Portfolio openen"
+                  class="px-2 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                  <i class="fa-solid fa-chevron-down text-xs" aria-hidden="true"></i>
+                </button>
+              </div>
+              <ul data-submenu
+                class="hidden md:group-hover:block md:focus-within:block mt-1 md:mt-0 md:absolute md:left-0 md:top-full md:w-56 bg-white border border-gray-200 rounded-lg shadow-md py-1 z-50">
+                <li><a href="project1.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Project 1</a></li>
+                <li><a href="project2.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Project 2</a></li>
+                <li><a href="project3.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Project 3</a></li>
+                <li><a href="project4.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Project 4</a></li>
+                <li><a href="project5.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Project 5</a></li>
+                <li><a href="project6.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Project 6</a></li>
+              </ul>
             </li>
             <li>
               <a href="contact.html"
@@ -63,59 +75,56 @@
       </div>
     </header>
 
-<div class="flex flex-col lg:flex-row gap-6 p-6">
-    <main class="flex-1 min-w-0">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <figure class="bg-gray-50 p-4 rounded border border-gray-200 text-center">
-                <div class="bg-gray-200 h-28 mb-2 rounded flex items-center justify-center text-gray-500 text-sm">Project 1</div>
-                <figcaption class="text-sm font-medium"></figcaption>
-            </figure>
-            <figure class="bg-gray-50 p-4 rounded border border-gray-200 text-center">
-                <div class="bg-gray-200 h-28 mb-2 rounded flex items-center justify-center text-gray-500 text-sm">Project 2</div>
-                <figcaption class="text-sm font-medium"></figcaption>
-            </figure>
-            <figure class="bg-gray-50 p-4 rounded border border-gray-200 text-center">
-                <div class="bg-gray-200 h-28 mb-2 rounded flex items-center justify-center text-gray-500 text-sm">Project 3</div>
-                <figcaption class="text-sm font-medium"></figcaption>
-            </figure>
-            <figure class="bg-gray-50 p-4 rounded border border-gray-200 text-center">
-                <div class="bg-gray-200 h-28 mb-2 rounded flex items-center justify-center text-gray-500 text-sm">Project 4</div>
-                <figcaption class="text-sm font-medium"></figcaption>
-            </figure>
-            <figure class="bg-gray-50 p-4 rounded border border-gray-200 text-center">
-                <div class="bg-gray-200 h-28 mb-2 rounded flex items-center justify-center text-gray-500 text-sm">Project 5</div>
-                <figcaption class="text-sm font-medium"></figcaption>
-            </figure>
-            <figure class="bg-gray-50 p-4 rounded border border-gray-200 text-center">
-                <div class="bg-gray-200 h-28 mb-2 rounded flex items-center justify-center text-gray-500 text-sm">Project 6</div>
-                <figcaption class="text-sm font-medium"></figcaption>
-            </figure>
-        </div>
-    </main>
+    <div class="flex flex-col lg:flex-row gap-6 p-6">
+      <main class="flex-1 min-w-0">
+        <h1 class="text-2xl font-bold text-gray-900 mb-4">Portfolio</h1>
 
-    <aside class="w-full lg:w-64 bg-white p-6 rounded-xl border border-gray-200 shadow-sm self-start space-y-3 shrink-0">
+        <p id="status-laden" class="text-sm text-gray-600 py-4">Projecten worden geladen...</p>
+        <p id="status-leeg" class="hidden text-sm text-gray-600 py-4">Er zijn nog geen projecten om weer te geven.</p>
+        <p id="status-fout" class="hidden text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg p-4">
+          Er ging iets mis bij het laden van de projecten. Probeer het later opnieuw.
+        </p>
+
+        <div id="projecten-lijst" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+        <template id="project-template">
+          <article class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <img src="" alt="" class="w-full h-36 object-cover rounded-lg mb-3 bg-gray-100">
+              <h2 class="text-lg font-bold text-gray-900 mb-1"></h2>
+              <p class="text-sm text-gray-700 mb-4"></p>
+            </div>
+            <a href="" class="inline-block text-sm font-medium text-blue-700 hover:underline">
+              Bekijk project
+            </a>
+          </article>
+        </template>
+      </main>
+
+      <aside class="w-full lg:w-64 bg-white p-6 rounded-xl border border-gray-200 shadow-sm self-start space-y-3 shrink-0">
         <h2 class="text-xl font-bold text-gray-900">Categorieën</h2>
         <ul class="space-y-2 text-sm text-gray-700">
-            <li class="flex items-center space-x-2">
-                <i class="fa-solid fa-folder text-blue-600" aria-hidden="true"></i>
-                <a href="#" class="hover:text-blue-600 font-medium">Alle projecten</a>
-            </li>
-            <li class="flex items-center space-x-2">
-                <i class="fa-solid fa-server text-gray-400" aria-hidden="true"></i>
-                <a href="#" class="hover:text-blue-600">Systeembeheer</a>
-            </li>
-            <li class="flex items-center space-x-2">
-                <i class="fa-solid fa-network-wired text-gray-400" aria-hidden="true"></i>
-                <a href="#" class="hover:text-blue-600">Netwerken</a>
-            </li>
-            <li class="flex items-center space-x-2">
-                <i class="fa-solid fa-code text-gray-400" aria-hidden="true"></i>
-                <a href="#" class="hover:text-blue-600">Webtechnologie</a>
-            </li>
+          <li class="flex items-center space-x-2">
+            <i class="fa-solid fa-folder text-blue-600" aria-hidden="true"></i>
+            <a href="#" class="hover:text-blue-600 font-medium">Alle projecten</a>
+          </li>
+          <li class="flex items-center space-x-2">
+            <i class="fa-solid fa-server text-gray-400" aria-hidden="true"></i>
+            <a href="#" class="hover:text-blue-600">Systeembeheer</a>
+          </li>
+          <li class="flex items-center space-x-2">
+            <i class="fa-solid fa-network-wired text-gray-400" aria-hidden="true"></i>
+            <a href="#" class="hover:text-blue-600">Netwerken</a>
+          </li>
+          <li class="flex items-center space-x-2">
+            <i class="fa-solid fa-code text-gray-400" aria-hidden="true"></i>
+            <a href="#" class="hover:text-blue-600">Webtechnologie</a>
+          </li>
         </ul>
-    </aside>
-</div>
-</div>
+      </aside>
+    </div>
+  </div>
+
   <footer class="bg-white border-t border-gray-200 mt-12 py-6 text-center text-sm text-gray-500">
     <div class="max-w-5xl mx-auto px-4">
       <p>&copy; 2026 Fleur Lemoyne — Student systeem- en netwerkbeheer aan AP Hogeschool Antwerpen.</p>
